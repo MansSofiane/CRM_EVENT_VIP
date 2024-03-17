@@ -1,0 +1,97 @@
+export const teamData = [
+    {
+      customer: {
+        name: "Arlene McCoy",
+        image: "/assets/images/users/user-1.jpg",
+        deg: "Ux designer",
+      },
+      status: "progress",
+      time: "42.5 hours",
+      chart: null,
+    },
+    {
+      customer: {
+        name: "Arlene McCoy",
+        image: "/assets/images/users/user-2.jpg",
+        deg: "Ux designer",
+      },
+      status: "complete",
+      time: "42.5 hours",
+      chart: null,
+    },
+    {
+      customer: {
+        name: "Arlene McCoy",
+        image: "/assets/images/users/user-3.jpg",
+        deg: "Ux designer",
+      },
+      status: "progress",
+      time: "42.5 hours",
+      chart: null,
+    },
+    {
+      customer: {
+        name: "Arlene McCoy",
+        image: "/assets/images/users/user-4.jpg",
+        deg: "Ux designer",
+      },
+      status: "complete",
+      time: "42.5 hours",
+      chart: null,
+    },
+  ];
+  export const donneesEvenements = [
+    {
+      id: 1,
+      titre: "Gala Annuel",
+      date: "2024-03-20",
+      horaires: "19:00 - 23:00",
+      lieu: "Palais des congrès, Paris",
+      type: "Gala",
+      formule: "VIP Gold",
+      client: "Entreprise XYZ",
+      nbArtistes: 5,
+      statut: "Validée",
+      etat: "À venir",
+    },
+    {
+      id: 2,
+      titre: "Concert Privé",
+      date: "2024-02-15",
+      horaires: "20:00 - 22:00",
+      lieu: "La Cigale, Paris",
+      type: "Concert",
+      formule: "Standard",
+      client: "M. Dupont",
+      nbArtistes: 3,
+      statut: "En cours",
+      etat: "À venir",
+    },
+    {
+      id: 3,
+      titre: "Mariage",
+      date: "2024-04-05",
+      horaires: "15:00 - 20:00",
+      lieu: "Château de Versailles, Versailles",
+      type: "Cérémonie",
+      formule: "Prestige",
+      client: "Famille Martin",
+      nbArtistes: 4,
+      statut: "Brouillon",
+      etat: "À venir",
+    },
+    {
+      id: 4,
+      titre: "Soirée de Lancement",
+      date: "2023-12-10",
+      horaires: "18:00 - 01:00",
+      lieu: "Hôtel Le Meurice, Paris",
+      type: "Soirée d'entreprise",
+      formule: "Sur-mesure",
+      client: "Startup ABC",
+      nbArtistes: 6,
+      statut: "Validée",
+      etat: "Passé",
+    }
+  ];
+  

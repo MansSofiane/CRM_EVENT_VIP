@@ -1,0 +1,21 @@
+Collaborateurs(id, nm ,prenom,type,specialite)
+option(id,nom_option,description,cout_additionnel)
+formules(id, prix, titre, cle etranger(option))
+Evenements(id, nom, status, lieu, prix_total, cout, benifice, date, cle etranger(formules), cle etranger(cleint), cle etranger(colaborateur))
+ {prix, titre, {nom_option,description,cout_additionnel}}
+
+class UserRegistrationView(CreateAPIView):
+    serializer_class = CollaborateurRegistrationSerializer
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        response = {
+            'success' : 'True',
+            'status code' : status.HTTP_200_OK,
+            'message': 'User registered  successfully',
+            }
+        status_code = status.HTTP_200_OK
+        return Response(response, status=status_code)
