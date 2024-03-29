@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics, filters
+from rest_framework import generics, filters, viewsets
 from .models import *
 from .serializers import *
 
@@ -13,6 +13,13 @@ from django.http import JsonResponse
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
+from datetime import datetime, timedelta
+
+
+from spond import spond
+import asyncio
+
+
 
 class FormulePagination(PageNumberPagination):
     page_size = 10
@@ -251,7 +258,7 @@ class ListEvenements(generics.RetrieveAPIView):
             raise Http404
 @permission_classes([AllowAny])
 class EvenementsRegistrationView(CreateAPIView):
-    serializer_class = EvenementsSerializer
+    serializer_class = EvenementsPostSerializer
     permission_classes = (AllowAny,)
 
     def post(self, request):
@@ -282,6 +289,61 @@ class EvenementsDetail(generics.RetrieveAPIView):
         instance = self.get_object()
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+######"""  Event Semain et plus et brouillon"
+@permission_classes([AllowAny])
+class EvenementsAmeliorationView(APIView):
+    def get(self, request, format=None):
+        deux_derniers_evenements = Evenements.objects.order_by('-date')[:2]
+        if len(deux_derniers_evenements) < 2:
+            return Response({})
+
+        dernier_evenement, avant_dernier_evenement = deux_derniers_evenements
+        amelioration = ((dernier_evenement.benifice - avant_dernier_evenement.benifice) / avant_dernier_evenement.benifice) * 100
+        return Response({'amelioration': amelioration})
+
+@permission_classes([AllowAny])
+class EvenementsBrouillonListView(generics.ListAPIView):
+    serializer_class = EvenementsSerializer
+    def get_queryset(self):
+        return Evenements.objects.filter(status='Brouillon')
+
+@permission_classes([AllowAny])
+class EvenementsAvenirListView(generics.ListAPIView):
+    serializer_class = EvenementsSerializer
+
+    def get_queryset(self):
+        today = datetime.now().date()
+        return Evenements.objects.filter(date__gte=today)
+
+@permission_classes([AllowAny])
+class EvenementsSemaineListView(generics.ListAPIView):
+    serializer_class = EvenementsSerializer
+
+    def get_queryset(self):
+        today = datetime.now().date()
+        next_week = today + timedelta(days=7)
+        return Evenements.objects.filter(date__range=[today, next_week])
+#######EventColaborateur
+@permission_classes([AllowAny])
+class EventColaborateurByIventViewSet(generics.ListAPIView):
+    serializer_class = EventColaborateurSerializer
+    def get_queryset(self):
+        event_id = self.kwargs.get('id')
+        queryset = EventColaborateur.objects.filter(evenements_id=event_id)
+        return queryset
+    def get(self, request, *args, **kwargs):
+        event_id = self.kwargs.get('id')
+        queryset = EventColaborateur.objects.filter(Evenements_id=event_id, collaborateur__type='Artist')
+        count = queryset.count()
+        return Response({
+            'count_collaborateur': count,
+            'results': EventColaborateurSerializer(queryset, many=True).data
+        })
+@permission_classes([AllowAny])
+class EventColaborateurViewset(viewsets.ModelViewSet):
+    queryset = EventColaborateur.objects.all()
+    serializer_class = EventColaborateurpostSerializer
+     
 #########""
 @permission_classes([AllowAny])
 class PrestationsListView(generics.ListAPIView):
@@ -331,3 +393,23 @@ class PrestationsDetail(generics.RetrieveAPIView):
         instance = self.get_object()
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+@permission_classes([AllowAny])
+class SpondData(APIView):
+    def get(self, request, format=None):
+        username = 'saidhr20@gmail.com'
+        password = '123crmevent'
+        group_id = '44031F6EEB37424D9E6CB0ECE68BB624'
+        client = spond.Spond(username=username, password=password)
+        try:
+            
+            group = s.get_group(group_id)
+            #client.login()
+            #events = client.get_events()
+            #groups = client.get_groups()
+            spond_data = {
+                'groups': groups
+            }
+
+            return Response(spond_data)
+        except Exception as e:
+            return Response({'message': f'Erreur lors de la récupération des données à partir de Spond: {str(e)}'}, status=500)

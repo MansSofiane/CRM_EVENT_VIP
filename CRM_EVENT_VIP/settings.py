@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'drf_yasg',
     'crm',
+    'spond',
 ]
 
 MIDDLEWARE = [

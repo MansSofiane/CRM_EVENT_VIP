@@ -22,16 +22,20 @@ class FormulesSerializer(serializers.ModelSerializer):
         option = obj.option
         return OptionSerializer(option).data
 
+class EvenementsPostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Evenements
+        fields = '__all__'
+
 class EvenementsSerializer(serializers.ModelSerializer):
-    collaborateur = serializers.SerializerMethodField()
+    #collaborateur = serializers.SerializerMethodField()
     formules = serializers.SerializerMethodField()
     client = serializers.SerializerMethodField()
     class Meta:
         model = Evenements
         fields = '__all__'
-    def get_collaborateur(self, obj):
-        collaborateur = obj.collaborateur
-        return CollaborateursSerializer(collaborateur).data
+    
     def get_client(self, obj):
         client = obj.client
         return ClientSerializer(client).data
@@ -46,4 +50,22 @@ class ClientSerializer(serializers.ModelSerializer):
 class PrestationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Prestations
+        fields = '__all__'
+
+class EventColaborateurSerializer(serializers.ModelSerializer):
+    collaborateur = serializers.SerializerMethodField()
+    evenements = serializers.SerializerMethodField()
+    class Meta:
+        model = EventColaborateur
+        fields = '__all__'
+    def get_evenements(self, obj):
+        evenements = obj.Evenements
+        return EvenementsSerializer(evenements).data
+    def get_collaborateur(self, obj):
+        collaborateur = obj.collaborateur
+        return CollaborateursSerializer(collaborateur).data
+
+class EventColaborateurpostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventColaborateur
         fields = '__all__'

@@ -1,5 +1,10 @@
-from django.urls import path
+from django.urls import path, include
 from .views import *
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'event_colaborateur', EventColaborateurViewset)
+
 
 urlpatterns = [
     path('collaborateurs/', CollaborateursListView.as_view(), name='collaborateurs-list'),
@@ -22,6 +27,15 @@ urlpatterns = [
     path('evenements/<int:id>/', ListEvenements.as_view(), name='evenements-detail'),
     path('ADDevenements/', EvenementsRegistrationView.as_view(), name='evenements-ADD'),
 	path('editevenements/<int:pk>/', EvenementsListView.as_view(), name='clients-edit'),
+	path('evenements/semaine/', EvenementsSemaineListView.as_view(), name='evenements-semaine'),
+	path('evenements/avenir/', EvenementsAvenirListView.as_view(), name='evenements-avenir'),
+	path('evenements/brouillon/', EvenementsBrouillonListView.as_view(), name='evenements-brouillon'),
+	path('evenements/amelioration/', EvenementsAmeliorationView.as_view(), name='evenements-amelioration'),
+	
+	#path('evenements_collaborateur', EventColaborateurByIventViewSet.as_view(), name='evenements_collaborateurByEvent'),
+	path('evenements_collaborateur/<int:id>', EventColaborateurByIventViewSet.as_view(), name='evenements_collaborateurByEvent'),
+
+
 
 
     path('ADDclients/', ClientRegistrationView.as_view(), name='clients-ADD'),
@@ -33,6 +47,10 @@ urlpatterns = [
     path('Prestations/', PrestationsListView.as_view(), name='Prestations-list'),
     path('Prestations/<int:id>/', ListPrestations.as_view(), name='Prestations-detail'),
 	path('editPrestations/<int:pk>/', PrestationsDetail.as_view(), name='clients-edit'),
+
+	path('spond/data/', SpondData.as_view(), name='spond-data'),
+
+	path('', include(router.urls)),
 
 
 ]

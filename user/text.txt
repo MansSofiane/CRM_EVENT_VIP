@@ -19,3 +19,7 @@ class UserRegistrationView(CreateAPIView):
             }
         status_code = status.HTTP_200_OK
         return Response(response, status=status_code)
+
+cerre une application django rest freamwork avec les methode get  Event avenir (moin d'une semaine)
+ et get Event de cette semain (mon 7 jours ) : Evenements(id, nom, status, lieu, prix_total, cout, 
+ benifice, date, horaires)

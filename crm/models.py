@@ -47,11 +47,17 @@ class Evenements(models.Model):
     cout = models.DecimalField(max_digits=10, decimal_places=2)
     benifice = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField()
+    horaires = models.CharField(max_length=100, null=True)
     formules = models.ForeignKey(Formules, on_delete=models.CASCADE)
-    collaborateur = models.ForeignKey(Collaborateurs, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     class Meta:
         db_table = 'Evenements'
+
+class EventColaborateur(models.Model):
+    Evenements = models.ForeignKey(Evenements, on_delete=models.CASCADE)
+    collaborateur = models.ForeignKey(Collaborateurs, on_delete=models.CASCADE)
+    class Meta:
+        db_table = 'EventColaborateur'
 
 class Prestations(models.Model):
     id = models.AutoField(primary_key=True)
